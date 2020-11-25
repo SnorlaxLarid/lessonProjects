@@ -25,10 +25,10 @@ class CNN(nn.Module):
             self.pooling = nn.AvgPool2d(2, 2)
         else:
             self.pooling = nn.MaxPool2d(2, 2)
-        self.pool_dim = (self.conv_dim - 2) // 2 + 1
+        self.pool_dim = self.conv_dim // 2
 
         self.conv = nn.Conv2d(1, self.kernel_num, self.kernel_dim)
-        tmp_dim = 14400
+        tmp_dim = self.pool_dim * self.pool_dim * kernel_num
         self.fc1 = nn.Linear(tmp_dim, self.hidden_dim)
         self.dp = nn.Dropout(self.dp_rate)
         self.fc2 = nn.Linear(self.hidden_dim, self.output_dim)
@@ -52,7 +52,7 @@ def train_cnn_pytorch():
     batch_size = 8
     lr = 0.01
     dp_rate = 0.3
-    epochs = 200
+    epochs = 1000
 
     best_result = [0, 0]
     no_update = 0
@@ -90,7 +90,7 @@ def train_cnn_pytorch():
         end = time.time()
         print(f"Epoch {epoch} done, Train average loss: {avg_loss}, costing time: {end - start}")
 
-        if epoch % 20 == 0:
+        if epoch % 50 == 0:
             accuracy, wrong_numbers = evaluate_cnn_pytorch(model, batch_size)
             if accuracy > best_result[0]:
                 best_result[0] = accuracy

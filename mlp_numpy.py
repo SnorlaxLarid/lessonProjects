@@ -28,9 +28,9 @@ def relu_deriv(x):
 
 def train_mlp_numpy():
     input_dim = 1024
-    hidden_dim = 200
+    hidden_dim = 100
     output_dim = 10
-    epochs = 500
+    epochs = 1000
     lr = 0.001
 
     nn = NeuralNetwork(input_dim, hidden_dim, output_dim, lr)
@@ -53,7 +53,7 @@ def train_mlp_numpy():
         time_to_finish = round(((epochs - e) * diff) / 60, 2)
         print("Error: " + str(err) + " | EPOCH: " + str(e) + " | Time to finish: " + str(time_to_finish) + " mins")
 
-        if e % 20 == 0:
+        if e % 50 == 0:
             accuracy, wrong_numbers = evaluate_mlp_numpy(nn)
             if accuracy > best_result[0]:
                 best_result[0] = accuracy
